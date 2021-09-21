@@ -57,6 +57,7 @@ namespace pmdi.Model
         /// Gets or sets property to store any custom values for models 
         /// </summary>
         [XmlIgnore]
+        [NotMapped]
         public Dictionary<string, object> CustomProperties { get; set; }
 
         #endregion
@@ -267,14 +268,14 @@ namespace pmdi.Model
         [Key]
         public Guid Id { get; set; }
         public TypeUnitAnalyse TypeUnitAnalyse { get; set; }
-        [ForeignKey("MesuringDenominatorId")]
-        public ReferenseMeasuring MesuringDenominator { get; set; }
+        [ForeignKey("MeasuringDenominatorId")]
+        public ReferenсeMeasuring MeasuringDenominator { get; set; }
         [Required]
-        public Guid MesuringDenominatorId { get; set; }
-        [ForeignKey("MesuringNumeratorId")]
-        public ReferenseMeasuring MesuringNumerator { get; set; }
+        public Guid MeasuringDenominatorId { get; set; }
+        [ForeignKey("MeasuringNumeratorId")]
+        public ReferenсeMeasuring MeasuringNumerator { get; set; }
         [Required]
-        public Guid MesuringNumeratorId { get; set; }
+        public Guid MeasuringNumeratorId { get; set; }
     }
 
     public class TypeAnalysis : BasePIModel
@@ -340,7 +341,7 @@ namespace pmdi.Model
         public Guid AnalysisId { get; set; }
         public Decimal ValueAnalysis { get; set; }
         [ForeignKey("MeasuringId")]
-        public ReferenseMeasuring Measuring { get; set; }
+        public ReferenсeMeasuring Measuring { get; set; }
         [Required]
         public Guid MeasuringId { get; set; }
         [ForeignKey("LabalatoryId")]
@@ -513,4 +514,18 @@ namespace pmdi.Model
         public string InfoTreatment { get; set; }
     }
 
+    public class TokenSharedViewPatient : BasePIModel
+    {
+        [Key]
+        public Guid Id { get; set; }
+        [Required]
+        public Guid UserId { get; set; }
+        public Guid Tsi { get; set; }
+        [ForeignKey("PatientId")]
+        public Patients Patient { get; set; }
+        [Required]
+        public Guid PatientId { get; set; }
+        public DateTime DateExpire { get; set; }
+        public bool DeleteAfterView { get; set; } 
+    }
 }

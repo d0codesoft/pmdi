@@ -23,7 +23,7 @@ namespace pmdi.Data
         public DbSet<DrugsSynonym> DrugsSynonym { get; set; }
         public DbSet<PatientMedicine> PatientMedicine { get; set; }
         public DbSet<ReferenseTypeMeasuring> ReferenseTypeMeasuring { get; set; }
-        public DbSet<ReferenseMeasuring> ReferenseMeasuring { get; set; }
+        public DbSet<ReferenсeMeasuring> ReferenсeMeasuring { get; set; }
         public DbSet<MeasuringSynonym> MeasuringSynonym { get; set; }
         public DbSet<ReferenseRelationshipMeasuring> ReferenseRelationshipMeasuring { get; set; }
         public DbSet<ReferenceUnitAnalyse> ReferenceUnitAnalyse { get; set; }
@@ -34,6 +34,12 @@ namespace pmdi.Data
         public DbSet<DocumentsPatient> DocumentsPatient { get; set; }
         public DbSet<HistiryTackOCR> HistiryTackOCR { get; set; }
         public DbSet<TackOCR> TackOCR { get; set; }
+        public DbSet<VitalSignsPatients> VitalSignsPatients { get; set; }
+        public DbSet<DiagnosisPatientsDoc> DiagnosisPatientsDoc { get; set; }
+        public DbSet<ReferenсeDoctors> ReferenсeDoctors { get; set; }
+        public DbSet<DiagnosisPatients> DiagnosisPatients { get; set; }
+        public DbSet<MedicalTreatment> MedicalTreatment { get; set; }
+        public DbSet<TokenSharedViewPatient> TokenSharedViewPatient { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

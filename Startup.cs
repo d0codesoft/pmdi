@@ -38,6 +38,7 @@ namespace pmdi
             services.AddDatabaseDeveloperPageExceptionFilter();
             
             services.AddIdentity<WebAppUser, WebAppRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddTokenProvider<DataProtectorTokenProvider<WebAppUser>>(TokenOptions.DefaultProvider);
 
@@ -45,6 +46,11 @@ namespace pmdi
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddRazorPages();
+            services.AddControllersWithViews();
+                //.AddRazorPagesOptions(options =>
+                //{
+                //    options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
+                //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +78,9 @@ namespace pmdi
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

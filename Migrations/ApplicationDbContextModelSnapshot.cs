@@ -15,7 +15,7 @@ namespace pmdi.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.9");
+                .HasAnnotation("ProductVersion", "5.0.10");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
@@ -257,6 +257,662 @@ namespace pmdi.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("pmdi.Model.DiagnosisPatients", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("DoctorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("InfoDiagnosis")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("DiagnosisPatients");
+                });
+
+            modelBuilder.Entity("pmdi.Model.DiagnosisPatientsDoc", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("DiagnosisPatientsId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<byte[]>("Document")
+                        .HasColumnType("longblob");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiagnosisPatientsId");
+
+                    b.ToTable("DiagnosisPatientsDoc");
+                });
+
+            modelBuilder.Entity("pmdi.Model.DocumentsPatient", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<byte[]>("DataDoc")
+                        .HasColumnType("longblob");
+
+                    b.Property<DateTime>("DateUpload")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Descr_en")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Descr_ru")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Descr_tr")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsOSR")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("DocumentsPatient");
+                });
+
+            modelBuilder.Entity("pmdi.Model.DrugsSynonym", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("DrugsId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("LangSybonym")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NameSynonym")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DrugsId");
+
+                    b.ToTable("DrugsSynonym");
+                });
+
+            modelBuilder.Entity("pmdi.Model.HistiryTackOCR", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("DescrState_en")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DescrState_ru")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DescrState_tr")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("DocPatientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocPatientId");
+
+                    b.ToTable("HistiryTackOCR");
+                });
+
+            modelBuilder.Entity("pmdi.Model.MeasuringSynonym", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("LangSynonym")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("MeasuringId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("NameSynonym")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeasuringId");
+
+                    b.ToTable("MeasuringSynonym");
+                });
+
+            modelBuilder.Entity("pmdi.Model.MedicalTreatment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("DateAppointment")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("DoctorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("InfoTreatment")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("MedicalTreatment");
+                });
+
+            modelBuilder.Entity("pmdi.Model.PatientAnalysis", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("AnalysisId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("DateAnalysis")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("LabalatoryId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MeasuringId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<decimal>("ValueAnalysis")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalysisId");
+
+                    b.HasIndex("LabalatoryId");
+
+                    b.HasIndex("MeasuringId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("PatientAnalysis");
+                });
+
+            modelBuilder.Entity("pmdi.Model.PatientMedicine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("BeginReception")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("Dosage")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<Guid>("DrugsID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("EndReception")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("IdUsers")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTimeOffset?>("PeriodReseving")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("UnitDosageID")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DrugsID");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("UnitDosageID");
+
+                    b.ToTable("PatientMedicine");
+                });
+
+            modelBuilder.Entity("pmdi.Model.Patients", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("DOB")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("IdUsers")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("MiddleName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<byte[]>("PhotoPatient")
+                        .HasColumnType("longblob");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Patients");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenceAnalysis", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("BaseUnitAnalyseId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Name_en")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name_ru")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name_tr")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("TypeAnalysisId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BaseUnitAnalyseId");
+
+                    b.HasIndex("TypeAnalysisId");
+
+                    b.ToTable("ReferenceAnalysis");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenceDrugs", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<decimal>("Dosage")
+                        .HasColumnType("decimal(15,4)");
+
+                    b.Property<string>("Name_en")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Name_ru")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Name_tr")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<Guid>("UnitDosageID")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UnitDosageID");
+
+                    b.ToTable("ReferenceDrugs");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenceLabalatory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Descr")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RefDownloadResult")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Site")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReferenceLabalatory");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenceUnitAnalyse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MeasuringDenominatorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MeasuringNumeratorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("TypeUnitAnalyse")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeasuringDenominatorId");
+
+                    b.HasIndex("MeasuringNumeratorId");
+
+                    b.ToTable("ReferenceUnitAnalyse");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenseRelationshipMeasuring", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<decimal>("CofficientRelationship")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<Guid>("MeasuringFirstId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MeasuringSecondId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeasuringFirstId");
+
+                    b.HasIndex("MeasuringSecondId");
+
+                    b.ToTable("ReferenseRelationshipMeasuring");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenseTypeMeasuring", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Name_en")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name_ru")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name_tr")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("ReferenseTypeMeasuring");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenсeDoctors", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Name_en")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name_ru")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name_tr")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReferenсeDoctors");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenсeMeasuring", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Name_en")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name_ru")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name_tr")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("TypeMeasuringID")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TypeMeasuringID");
+
+                    b.ToTable("ReferenсeMeasuring");
+                });
+
+            modelBuilder.Entity("pmdi.Model.TackOCR", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("DocPatientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsWork")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocPatientId");
+
+                    b.ToTable("TackOCR");
+                });
+
+            modelBuilder.Entity("pmdi.Model.TokenSharedViewPatient", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("DateExpire")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("DeleteAfterView")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("Tsi")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("TokenSharedViewPatient");
+                });
+
+            modelBuilder.Entity("pmdi.Model.TypeAnalysis", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsGroup")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsMark")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name_en")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name_ru")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name_tr")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("TypeAnalysis");
+                });
+
+            modelBuilder.Entity("pmdi.Model.UnitDosage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Name_en")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Name_ru")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Name_tr")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int>("TypeDasage")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UnitDosage");
+                });
+
+            modelBuilder.Entity("pmdi.Model.VitalSignsPatients", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<uint>("BludPressureLower")
+                        .HasColumnType("int unsigned");
+
+                    b.Property<uint>("BludPressureUpper")
+                        .HasColumnType("int unsigned");
+
+                    b.Property<DateTime>("MeasurementDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<uint>("Pulse")
+                        .HasColumnType("int unsigned");
+
+                    b.Property<decimal>("Temp")
+                        .HasColumnType("decimal(5,1)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("VitalSignsPatients");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("pmdi.Areas.Identity.Data.WebAppRole", null)
@@ -317,6 +973,298 @@ namespace pmdi.Migrations
                         .IsRequired();
 
                     b.Navigation("UserType");
+                });
+
+            modelBuilder.Entity("pmdi.Model.DiagnosisPatients", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenсeDoctors", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("pmdi.Model.Patients", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("pmdi.Model.DiagnosisPatientsDoc", b =>
+                {
+                    b.HasOne("pmdi.Model.DiagnosisPatients", null)
+                        .WithMany("Documents")
+                        .HasForeignKey("DiagnosisPatientsId");
+                });
+
+            modelBuilder.Entity("pmdi.Model.DocumentsPatient", b =>
+                {
+                    b.HasOne("pmdi.Model.Patients", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("pmdi.Model.DrugsSynonym", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenceDrugs", "Drugs")
+                        .WithMany()
+                        .HasForeignKey("DrugsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Drugs");
+                });
+
+            modelBuilder.Entity("pmdi.Model.HistiryTackOCR", b =>
+                {
+                    b.HasOne("pmdi.Model.DocumentsPatient", "DocPatient")
+                        .WithMany()
+                        .HasForeignKey("DocPatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DocPatient");
+                });
+
+            modelBuilder.Entity("pmdi.Model.MeasuringSynonym", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenсeMeasuring", "Measuring")
+                        .WithMany()
+                        .HasForeignKey("MeasuringId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Measuring");
+                });
+
+            modelBuilder.Entity("pmdi.Model.MedicalTreatment", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenсeDoctors", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("pmdi.Model.Patients", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("pmdi.Model.PatientAnalysis", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenceAnalysis", "Analysis")
+                        .WithMany()
+                        .HasForeignKey("AnalysisId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("pmdi.Model.ReferenceLabalatory", "Labalatory")
+                        .WithMany()
+                        .HasForeignKey("LabalatoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("pmdi.Model.ReferenсeMeasuring", "Measuring")
+                        .WithMany()
+                        .HasForeignKey("MeasuringId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("pmdi.Model.Patients", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Analysis");
+
+                    b.Navigation("Labalatory");
+
+                    b.Navigation("Measuring");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("pmdi.Model.PatientMedicine", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenceDrugs", "Drugs")
+                        .WithMany()
+                        .HasForeignKey("DrugsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("pmdi.Model.Patients", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("pmdi.Model.UnitDosage", "UnitDosage")
+                        .WithMany()
+                        .HasForeignKey("UnitDosageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Drugs");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("UnitDosage");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenceAnalysis", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenceUnitAnalyse", "BaseUnitAnalyse")
+                        .WithMany()
+                        .HasForeignKey("BaseUnitAnalyseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("pmdi.Model.TypeAnalysis", "TypeAnalysis")
+                        .WithMany()
+                        .HasForeignKey("TypeAnalysisId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BaseUnitAnalyse");
+
+                    b.Navigation("TypeAnalysis");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenceDrugs", b =>
+                {
+                    b.HasOne("pmdi.Model.UnitDosage", "UnitDosage")
+                        .WithMany()
+                        .HasForeignKey("UnitDosageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UnitDosage");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenceUnitAnalyse", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenсeMeasuring", "MeasuringDenominator")
+                        .WithMany()
+                        .HasForeignKey("MeasuringDenominatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("pmdi.Model.ReferenсeMeasuring", "MeasuringNumerator")
+                        .WithMany()
+                        .HasForeignKey("MeasuringNumeratorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MeasuringDenominator");
+
+                    b.Navigation("MeasuringNumerator");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenseRelationshipMeasuring", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenсeMeasuring", "MeasuringFirst")
+                        .WithMany()
+                        .HasForeignKey("MeasuringFirstId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("pmdi.Model.ReferenсeMeasuring", "MeasuringSecond")
+                        .WithMany()
+                        .HasForeignKey("MeasuringSecondId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MeasuringFirst");
+
+                    b.Navigation("MeasuringSecond");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenseTypeMeasuring", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenseTypeMeasuring", "Parent")
+                        .WithMany("ChildItems")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenсeMeasuring", b =>
+                {
+                    b.HasOne("pmdi.Model.ReferenseTypeMeasuring", "TypeMeasuring")
+                        .WithMany()
+                        .HasForeignKey("TypeMeasuringID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TypeMeasuring");
+                });
+
+            modelBuilder.Entity("pmdi.Model.TackOCR", b =>
+                {
+                    b.HasOne("pmdi.Model.DocumentsPatient", "DocPatient")
+                        .WithMany()
+                        .HasForeignKey("DocPatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DocPatient");
+                });
+
+            modelBuilder.Entity("pmdi.Model.TokenSharedViewPatient", b =>
+                {
+                    b.HasOne("pmdi.Model.Patients", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("pmdi.Model.TypeAnalysis", b =>
+                {
+                    b.HasOne("pmdi.Model.TypeAnalysis", "Parent")
+                        .WithMany("ChildItems")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("pmdi.Model.VitalSignsPatients", b =>
+                {
+                    b.HasOne("pmdi.Model.Patients", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("pmdi.Model.DiagnosisPatients", b =>
+                {
+                    b.Navigation("Documents");
+                });
+
+            modelBuilder.Entity("pmdi.Model.ReferenseTypeMeasuring", b =>
+                {
+                    b.Navigation("ChildItems");
+                });
+
+            modelBuilder.Entity("pmdi.Model.TypeAnalysis", b =>
+                {
+                    b.Navigation("ChildItems");
                 });
 #pragma warning restore 612, 618
         }
