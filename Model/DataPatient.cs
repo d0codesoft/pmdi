@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
+using DBID = System.Int32;
+using USERID = System.Guid;
 
 namespace pmdi.Model
 {
@@ -78,13 +80,19 @@ namespace pmdi.Model
         dector
     }
 
+    public enum PatientSex
+    {
+        male = 0,
+        female
+    }
+
     //пользователи системы
     public class Patients : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
-        public Guid IdUsers { get; set; }
+        public USERID UserId { get; set; }
 
         [StringLength(100)]
         [Required] // Data annotations needed to configure as required
@@ -102,6 +110,21 @@ namespace pmdi.Model
         public DateTime DOB { get; set; }
 
         public byte[] PhotoPatient { get; set; }
+
+        [StringLength(150)]
+        public string Adress { get; set; }
+
+        [Column(TypeName = "decimal(5,1)")]
+        public Decimal Weight { get; set; }
+
+        public PatientSex Sex { get; set; }
+
+        [NotMapped]
+        public int Age { 
+            get {
+                return new DateTime(DateTime.Now.Subtract(DOB).Ticks).Year - 1;
+            }
+        }
     }
 
     //характеиристика дозировки
@@ -109,14 +132,15 @@ namespace pmdi.Model
     public enum TypeDasage
     {
         volume = 0,
-        weingth
+        weingth,
+        rings
     }
 
     //Данные еденицы измерения дозировки лекарств
     public class UnitDosage : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [StringLength(200)]
         public string Name_en { get; set; }
 
@@ -133,7 +157,7 @@ namespace pmdi.Model
     public class ReferenceDrugs : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [StringLength(200)]
         public string Name_en { get; set; }
         [StringLength(200)]
@@ -142,7 +166,7 @@ namespace pmdi.Model
         public string Name_tr { get; set; }
         [ForeignKey("UnitDosageID")]
         public UnitDosage UnitDosage { get; set; }
-        public Guid UnitDosageID { get; set; }
+        public DBID UnitDosageID { get; set; }
         [Column(TypeName = "decimal(15,4)")]
         public Decimal Dosage { get; set; }
     }
@@ -151,11 +175,11 @@ namespace pmdi.Model
     public class DrugsSynonym : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [ForeignKey("DrugsId")]
         public ReferenceDrugs Drugs { get; set; }
         [Required]
-        public Guid DrugsId { get; set; }
+        public DBID DrugsId { get; set; }
         public LangSupport LangSybonym { get; set; }
 
         [StringLength(200)]
@@ -166,13 +190,13 @@ namespace pmdi.Model
     public class PatientMedicine : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
-        public Guid IdUsers { get; set; }
+        public USERID UserId { get; set; }
         [ForeignKey("PatientId")]
         public Patients Patient { get; set; }
         [Required]
-        public Guid PatientId { get; set; }
+        public DBID PatientId { get; set; }
 
         [Display(Name = "Period reseving")]
         [DataType(DataType.Date)]
@@ -189,25 +213,34 @@ namespace pmdi.Model
         public DateTime? EndReception { get; set; }
         [ForeignKey("DrugsID")]
         public ReferenceDrugs Drugs { get; set; }
-        public Guid DrugsID { get; set; }
+        public DBID DrugsID { get; set; }
         [ForeignKey("UnitDosageID")]
         public UnitDosage UnitDosage { get; set; }
-        public Guid UnitDosageID { get; set; }
+        public DBID UnitDosageID { get; set; }
+        [Column(TypeName = "decimal(15,4)")]
         public Decimal Dosage { get; set; }
+        [Column(TypeName = "decimal(15,4)")]
+        public Decimal DosageDaily { get; set; }
+        [Column(TypeName = "decimal(15,4)")]
+        public Decimal DosageMorning { get; set; }
+        [Column(TypeName = "decimal(15,4)")]
+        public Decimal DosageLunch { get; set; }
+        [Column(TypeName = "decimal(15,4)")]
+        public Decimal DosageEvening { get; set; }
     }
 
     //Справочник групп показателей измерений анализов (анализы крови, анализы мочи, прочие анализы)
     public class ReferenseTypeMeasuring : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         public string Name_en { get; set; }
         public string Name_ru { get; set; }
         public string Name_tr { get; set; }
 
         [ForeignKey("ParentId")]
         public ReferenseTypeMeasuring Parent { get; set; }
-        public Guid? ParentId { get; set; }
+        public DBID? ParentId { get; set; }
         public ICollection<ReferenseTypeMeasuring> ChildItems { get; } = new List<ReferenseTypeMeasuring>();
     }
 
@@ -215,11 +248,11 @@ namespace pmdi.Model
     public class ReferenсeMeasuring : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
         [ForeignKey("TypeMeasuringID")]
         public ReferenseTypeMeasuring TypeMeasuring { get; set; }
-        public Guid TypeMeasuringID { get; set; }
+        public DBID TypeMeasuringID { get; set; }
 
         public string Name_en { get; set; }
         public string Name_ru { get; set; }
@@ -230,11 +263,11 @@ namespace pmdi.Model
     public class MeasuringSynonym : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [ForeignKey("MeasuringId")]
         public ReferenсeMeasuring Measuring { get; set; }
         [Required]
-        public Guid MeasuringId { get; set; }
+        public DBID MeasuringId { get; set; }
         public LangSupport LangSynonym { get; set; }
         public string NameSynonym { get; set; }
     }
@@ -243,15 +276,16 @@ namespace pmdi.Model
     public class ReferenseRelationshipMeasuring : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [ForeignKey("MeasuringFirstId")]
         public ReferenсeMeasuring MeasuringFirst { get; set; }
         [Required]
-        public Guid MeasuringFirstId { get; set; }
+        public DBID MeasuringFirstId { get; set; }
         [ForeignKey("MeasuringSecondId")]
         public ReferenсeMeasuring MeasuringSecond { get; set; }
         [Required]
-        public Guid MeasuringSecondId { get; set; }
+        public DBID MeasuringSecondId { get; set; }
+        [Column(TypeName = "decimal(15,4)")]
         public Decimal CofficientRelationship { get; set; }
     }
 
@@ -266,22 +300,22 @@ namespace pmdi.Model
     public class ReferenceUnitAnalyse : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         public TypeUnitAnalyse TypeUnitAnalyse { get; set; }
         [ForeignKey("MeasuringDenominatorId")]
         public ReferenсeMeasuring MeasuringDenominator { get; set; }
         [Required]
-        public Guid MeasuringDenominatorId { get; set; }
+        public DBID MeasuringDenominatorId { get; set; }
         [ForeignKey("MeasuringNumeratorId")]
         public ReferenсeMeasuring MeasuringNumerator { get; set; }
         [Required]
-        public Guid MeasuringNumeratorId { get; set; }
+        public DBID MeasuringNumeratorId { get; set; }
     }
 
     public class TypeAnalysis : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         public bool IsGroup { get; set; }
         public string Name_en { get; set; }
         public string Name_ru { get; set; }
@@ -290,7 +324,7 @@ namespace pmdi.Model
 
         [ForeignKey("ParentId")]
         public TypeAnalysis Parent { get; set; }
-        public Guid? ParentId { get; set; }
+        public DBID? ParentId { get; set; }
         public ICollection<TypeAnalysis> ChildItems { get; } = new List<TypeAnalysis>();
     }
 
@@ -298,16 +332,16 @@ namespace pmdi.Model
     public class ReferenceAnalysis : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [ForeignKey("BaseUnitAnalyseId")]
         public ReferenceUnitAnalyse BaseUnitAnalyse { get; set; }
         [Required]
-        public Guid BaseUnitAnalyseId { get; set; }
+        public DBID BaseUnitAnalyseId { get; set; }
 
         [ForeignKey("TypeAnalysisId")]
         public TypeAnalysis TypeAnalysis { get; set; }
         [Required]
-        public Guid TypeAnalysisId { get; set; }
+        public DBID TypeAnalysisId { get; set; }
 
         public string Name_en { get; set; }
         public string Name_ru { get; set; }
@@ -317,7 +351,7 @@ namespace pmdi.Model
     public class ReferenceLabalatory : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         public string Descr { get; set; }
         public string RefDownloadResult { get; set; }
         public string Site { get; set; }
@@ -327,26 +361,27 @@ namespace pmdi.Model
     public class PatientAnalysis : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
-        public Guid UserId { get; set; }
+        public USERID UserId { get; set; }
         [ForeignKey("PatientId")]
         public Patients Patient { get; set; }
         [Required]
-        public Guid PatientId { get; set; }
+        public DBID PatientId { get; set; }
         public DateTime DateAnalysis { get; set; }
         [ForeignKey("AnalysisId")]
         public ReferenceAnalysis Analysis { get; set; }
         [Required]
-        public Guid AnalysisId { get; set; }
+        public DBID AnalysisId { get; set; }
+        [Column(TypeName = "decimal(15,4)")]
         public Decimal ValueAnalysis { get; set; }
         [ForeignKey("MeasuringId")]
         public ReferenсeMeasuring Measuring { get; set; }
         [Required]
-        public Guid MeasuringId { get; set; }
+        public DBID MeasuringId { get; set; }
         [ForeignKey("LabalatoryId")]
         public ReferenceLabalatory Labalatory { get; set; }
-        public Guid LabalatoryId { get; set; }
+        public DBID LabalatoryId { get; set; }
     }
 
     //public enum StateTaskDownloadAnalysis
@@ -389,13 +424,13 @@ namespace pmdi.Model
     public class DocumentsPatient : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
         public Guid UserId { get; set; }
         [ForeignKey("PatientId")]
         public Patients Patient { get; set; }
         [Required]
-        public Guid PatientId { get; set; }
+        public DBID PatientId { get; set; }
         public DateTime DateUpload { get; set; }
         public string Name { get; set; }
         public string Descr_en { get; set; }
@@ -416,10 +451,10 @@ namespace pmdi.Model
     public class HistiryTackOCR : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [ForeignKey("DocPatientId")]
         public DocumentsPatient DocPatient { get; set; }
-        public Guid DocPatientId { get; set; }
+        public DBID DocPatientId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public StateTaskOCR State { get; set; }
@@ -431,10 +466,10 @@ namespace pmdi.Model
     public class TackOCR : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [ForeignKey("DocPatientId")]
         public DocumentsPatient DocPatient { get; set; }
-        public Guid DocPatientId { get; set; }
+        public DBID DocPatientId { get; set; }
         public DateTime StartDate { get; set; }
         public bool IsWork { get; set; }
     }
@@ -442,13 +477,13 @@ namespace pmdi.Model
     public class VitalSignsPatients : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
-        public Guid UserId { get; set; }
+        public USERID UserId { get; set; }
         [ForeignKey("PatientId")]
         public Patients Patient { get; set; }
         [Required]
-        public Guid PatientId { get; set; }
+        public DBID PatientId { get; set; }
         public DateTime MeasurementDate { get; set; }
         public uint BludPressureUpper { get; set; }
         public uint BludPressureLower { get; set; }
@@ -460,18 +495,18 @@ namespace pmdi.Model
     public class DiagnosisPatientsDoc : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
-        public Guid UserId { get; set; }
+        public USERID UserId { get; set; }
         public byte[] Document { get; set; }
     }
 
     public class ReferenсeDoctors : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
-        public Guid UserId { get; set; }
+        public USERID UserId { get; set; }
         public string Name_en { get; set; }
         public string Name_ru { get; set; }
         public string Name_tr { get; set; }
@@ -481,50 +516,51 @@ namespace pmdi.Model
     public class DiagnosisPatients : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
-        public Guid UserId { get; set; }
+        public USERID UserId { get; set; }
         [ForeignKey("PatientId")]
         public Patients Patient { get; set; }
         [Required]
-        public Guid PatientId { get; set; }
+        public DBID PatientId { get; set; }
 
         public string InfoDiagnosis { get; set; }
         public ICollection<DiagnosisPatientsDoc> Documents { get; set; }
         [ForeignKey("DoctorId")] 
         public ReferenсeDoctors Doctor { get; set; }
-        public Guid? DoctorId { get; set; }
+        public DBID? DoctorId { get; set; }
     }
 
 
     public class MedicalTreatment : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
-        public Guid UserId { get; set; }
+        public USERID UserId { get; set; }
         [ForeignKey("PatientId")]
         public Patients Patient { get; set; }
         [Required]
-        public Guid PatientId { get; set; }
+        public DBID PatientId { get; set; }
         public DateTime DateAppointment { get; set; }
         [ForeignKey("DoctorId")]
         public ReferenсeDoctors Doctor { get; set; }
-        public Guid? DoctorId { get; set; }
+        public DBID? DoctorId { get; set; }
         public string InfoTreatment { get; set; }
     }
 
     public class TokenSharedViewPatient : BasePIModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public DBID Id { get; set; }
         [Required]
-        public Guid UserId { get; set; }
-        public Guid Tsi { get; set; }
+        public USERID UserId { get; set; }
+        [StringLength(36)]
+        public string Tsi { get; set; }
         [ForeignKey("PatientId")]
         public Patients Patient { get; set; }
         [Required]
-        public Guid PatientId { get; set; }
+        public DBID PatientId { get; set; }
         public DateTime DateExpire { get; set; }
         public bool DeleteAfterView { get; set; } 
     }

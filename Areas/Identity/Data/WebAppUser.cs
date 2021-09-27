@@ -6,18 +6,22 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using USERID = System.Guid;
 
 namespace pmdi.Areas.Identity.Data
 {
-    public class TypeUser
+    public class WebAppUser : IdentityUser<USERID>
     {
-        [Key]
-        public int idTypeUsers { get; set; }
-        public string Name { get; set; }
-    }
+        public WebAppUser():base()
+        {
 
-    public class WebAppUser : IdentityUser<Guid>
-    {
+        }
+
+        public WebAppUser(string userName):base(userName)
+        {
+
+        }
+
         [StringLength(100)]
         [PersonalData]
         [Required] // Data annotations needed to configure as required
@@ -36,11 +40,5 @@ namespace pmdi.Areas.Identity.Data
         [DataType(DataType.Date)]
         [PersonalData]
         public DateTime DOB { get; set; }
-
-        [Comment("Type user - Patient or Doctor")]
-        public TypeUser UserType { get; set; }
-
-        [ForeignKey("UserType")]
-        public int UserTypeFK { get; set; }
     }
 }

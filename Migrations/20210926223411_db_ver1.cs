@@ -1,23 +1,72 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace pmdi.Migrations
 {
-    public partial class mdidb : Migration
+    public partial class db_ver1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateTable(
-                name: "DiagnosisPatientsDoc",
+                name: "AspNetRoles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Document = table.Column<byte[]>(type: "longblob", nullable: true)
+                    Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NormalizedName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiagnosisPatientsDoc", x => x.Id);
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    FirstName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LastName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MiddleName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DOB = table.Column<DateTime>(type: "datetime(6)", nullable: false, comment: "Date of Birth"),
+                    UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NormalizedEmail = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EmailConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SecurityStamp = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -25,8 +74,9 @@ namespace pmdi.Migrations
                 name: "Patients",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    IdUsers = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     FirstName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
@@ -34,7 +84,11 @@ namespace pmdi.Migrations
                     MiddleName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DOB = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    PhotoPatient = table.Column<byte[]>(type: "longblob", nullable: true)
+                    PhotoPatient = table.Column<byte[]>(type: "longblob", nullable: true),
+                    Adress = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Weight = table.Column<decimal>(type: "decimal(5,1)", nullable: false),
+                    Sex = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,10 +97,31 @@ namespace pmdi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "ReferenсeDoctors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Name_en = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name_ru = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name_tr = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReferenсeDoctors", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "ReferenceLabalatory",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Descr = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     RefDownloadResult = table.Column<string>(type: "longtext", nullable: true)
@@ -64,14 +139,15 @@ namespace pmdi.Migrations
                 name: "ReferenseTypeMeasuring",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name_en = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name_ru = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name_tr = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ParentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    ParentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -86,29 +162,11 @@ namespace pmdi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ReferenсeDoctors",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name_en = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name_ru = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name_tr = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReferenсeDoctors", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "TypeAnalysis",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IsGroup = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Name_en = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -117,7 +175,7 @@ namespace pmdi.Migrations
                     Name_tr = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsMark = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ParentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    ParentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -135,7 +193,8 @@ namespace pmdi.Migrations
                 name: "UnitDosage",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name_en = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name_ru = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
@@ -151,12 +210,134 @@ namespace pmdi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    RoleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ClaimType = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClaimValue = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ClaimType = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ClaimValue = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ProviderKey = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ProviderDisplayName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    RoleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Value = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "DocumentsPatient",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    PatientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
                     DateUpload = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -182,12 +363,38 @@ namespace pmdi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "TokenSharedViewPatient",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Tsi = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    DateExpire = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DeleteAfterView = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TokenSharedViewPatient", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TokenSharedViewPatient_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "VitalSignsPatients",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    PatientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
                     MeasurementDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     BludPressureUpper = table.Column<uint>(type: "int unsigned", nullable: false),
                     BludPressureLower = table.Column<uint>(type: "int unsigned", nullable: false),
@@ -207,40 +414,16 @@ namespace pmdi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ReferenсeMeasuring",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    TypeMeasuringID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name_en = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name_ru = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name_tr = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReferenсeMeasuring", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ReferenсeMeasuring_ReferenseTypeMeasuring_TypeMeasuringID",
-                        column: x => x.TypeMeasuringID,
-                        principalTable: "ReferenseTypeMeasuring",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "DiagnosisPatients",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    PatientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
                     InfoDiagnosis = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DoctorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    DoctorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -264,11 +447,12 @@ namespace pmdi.Migrations
                 name: "MedicalTreatment",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    PatientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
                     DateAppointment = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DoctorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    DoctorId = table.Column<int>(type: "int", nullable: true),
                     InfoTreatment = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
@@ -291,17 +475,44 @@ namespace pmdi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "ReferenсeMeasuring",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TypeMeasuringID = table.Column<int>(type: "int", nullable: false),
+                    Name_en = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name_ru = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name_tr = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReferenсeMeasuring", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReferenсeMeasuring_ReferenseTypeMeasuring_TypeMeasuringID",
+                        column: x => x.TypeMeasuringID,
+                        principalTable: "ReferenseTypeMeasuring",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "ReferenceDrugs",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name_en = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name_ru = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name_tr = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    UnitDosageID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UnitDosageID = table.Column<int>(type: "int", nullable: false),
                     Dosage = table.Column<decimal>(type: "decimal(15,4)", nullable: false)
                 },
                 constraints: table =>
@@ -320,8 +531,9 @@ namespace pmdi.Migrations
                 name: "HistiryTackOCR",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    DocPatientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    DocPatientId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     State = table.Column<int>(type: "int", nullable: false),
@@ -348,8 +560,9 @@ namespace pmdi.Migrations
                 name: "TackOCR",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    DocPatientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    DocPatientId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IsWork = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
@@ -366,11 +579,34 @@ namespace pmdi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "DiagnosisPatientsDoc",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Document = table.Column<byte[]>(type: "longblob", nullable: true),
+                    DiagnosisPatientsId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiagnosisPatientsDoc", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DiagnosisPatientsDoc_DiagnosisPatients_DiagnosisPatientsId",
+                        column: x => x.DiagnosisPatientsId,
+                        principalTable: "DiagnosisPatients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "MeasuringSynonym",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    MeasuringId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    MeasuringId = table.Column<int>(type: "int", nullable: false),
                     LangSynonym = table.Column<int>(type: "int", nullable: false),
                     NameSynonym = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
@@ -391,10 +627,11 @@ namespace pmdi.Migrations
                 name: "ReferenceUnitAnalyse",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TypeUnitAnalyse = table.Column<int>(type: "int", nullable: false),
-                    MeasuringDenominatorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    MeasuringNumeratorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    MeasuringDenominatorId = table.Column<int>(type: "int", nullable: false),
+                    MeasuringNumeratorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -418,10 +655,11 @@ namespace pmdi.Migrations
                 name: "ReferenseRelationshipMeasuring",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    MeasuringFirstId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    MeasuringSecondId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    CofficientRelationship = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    MeasuringFirstId = table.Column<int>(type: "int", nullable: false),
+                    MeasuringSecondId = table.Column<int>(type: "int", nullable: false),
+                    CofficientRelationship = table.Column<decimal>(type: "decimal(15,4)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -445,8 +683,9 @@ namespace pmdi.Migrations
                 name: "DrugsSynonym",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    DrugsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    DrugsId = table.Column<int>(type: "int", nullable: false),
                     LangSybonym = table.Column<int>(type: "int", nullable: false),
                     NameSynonym = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
@@ -467,15 +706,16 @@ namespace pmdi.Migrations
                 name: "PatientMedicine",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    IdUsers = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    PatientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
                     PeriodReseving = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
                     BeginReception = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EndReception = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    DrugsID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    UnitDosageID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Dosage = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                    DrugsID = table.Column<int>(type: "int", nullable: false),
+                    UnitDosageID = table.Column<int>(type: "int", nullable: false),
+                    Dosage = table.Column<decimal>(type: "decimal(15,4)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -505,9 +745,10 @@ namespace pmdi.Migrations
                 name: "ReferenceAnalysis",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    BaseUnitAnalyseId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    TypeAnalysisId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    BaseUnitAnalyseId = table.Column<int>(type: "int", nullable: false),
+                    TypeAnalysisId = table.Column<int>(type: "int", nullable: false),
                     Name_en = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name_ru = table.Column<string>(type: "longtext", nullable: true)
@@ -537,14 +778,15 @@ namespace pmdi.Migrations
                 name: "PatientAnalysis",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    PatientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
                     DateAnalysis = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AnalysisId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ValueAnalysis = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    MeasuringId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    LabalatoryId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    AnalysisId = table.Column<int>(type: "int", nullable: false),
+                    ValueAnalysis = table.Column<decimal>(type: "decimal(15,4)", nullable: false),
+                    MeasuringId = table.Column<int>(type: "int", nullable: false),
+                    LabalatoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -553,6 +795,12 @@ namespace pmdi.Migrations
                         name: "FK_PatientAnalysis_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PatientAnalysis_ReferenсeMeasuring_MeasuringId",
+                        column: x => x.MeasuringId,
+                        principalTable: "ReferenсeMeasuring",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -567,14 +815,45 @@ namespace pmdi.Migrations
                         principalTable: "ReferenceLabalatory",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PatientAnalysis_ReferenсeMeasuring_MeasuringId",
-                        column: x => x.MeasuringId,
-                        principalTable: "ReferenсeMeasuring",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DiagnosisPatients_DoctorId",
@@ -585,6 +864,11 @@ namespace pmdi.Migrations
                 name: "IX_DiagnosisPatients_PatientId",
                 table: "DiagnosisPatients",
                 column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DiagnosisPatientsDoc_DiagnosisPatientsId",
+                table: "DiagnosisPatientsDoc",
+                column: "DiagnosisPatientsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DocumentsPatient_PatientId",
@@ -652,6 +936,11 @@ namespace pmdi.Migrations
                 column: "UnitDosageID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ReferenсeMeasuring_TypeMeasuringID",
+                table: "ReferenсeMeasuring",
+                column: "TypeMeasuringID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ReferenceAnalysis_BaseUnitAnalyseId",
                 table: "ReferenceAnalysis",
                 column: "BaseUnitAnalyseId");
@@ -692,14 +981,14 @@ namespace pmdi.Migrations
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReferenсeMeasuring_TypeMeasuringID",
-                table: "ReferenсeMeasuring",
-                column: "TypeMeasuringID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TackOCR_DocPatientId",
                 table: "TackOCR",
                 column: "DocPatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TokenSharedViewPatient_PatientId",
+                table: "TokenSharedViewPatient",
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TypeAnalysis_ParentId",
@@ -715,7 +1004,19 @@ namespace pmdi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DiagnosisPatients");
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
                 name: "DiagnosisPatientsDoc");
@@ -745,10 +1046,19 @@ namespace pmdi.Migrations
                 name: "TackOCR");
 
             migrationBuilder.DropTable(
+                name: "TokenSharedViewPatient");
+
+            migrationBuilder.DropTable(
                 name: "VitalSignsPatients");
 
             migrationBuilder.DropTable(
-                name: "ReferenсeDoctors");
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "DiagnosisPatients");
 
             migrationBuilder.DropTable(
                 name: "ReferenceAnalysis");
@@ -761,6 +1071,9 @@ namespace pmdi.Migrations
 
             migrationBuilder.DropTable(
                 name: "DocumentsPatient");
+
+            migrationBuilder.DropTable(
+                name: "ReferenсeDoctors");
 
             migrationBuilder.DropTable(
                 name: "ReferenceUnitAnalyse");

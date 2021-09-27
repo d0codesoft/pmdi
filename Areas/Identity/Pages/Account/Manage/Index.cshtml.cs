@@ -49,10 +49,6 @@ namespace pmdi.Areas.Identity.Pages.Account.Manage
             [Required]
             public DateTime DOB { get; set; }
 
-            [Display(Name = "Type user - Patient or Doctor")]
-            [Required]
-            public TypeUser UserType { get; set; }
-
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -71,7 +67,7 @@ namespace pmdi.Areas.Identity.Pages.Account.Manage
                 LastName = user.LastName,
                 MiddleName = user.MiddleName,
                 DOB = user.DOB,
-                UserType = user.UserType,
+                //UserType = user.UserType,
                 PhoneNumber = phoneNumber
             };
         }
@@ -125,8 +121,8 @@ namespace pmdi.Areas.Identity.Pages.Account.Manage
             if (Input.DOB != user.DOB)
             { user.DOB = Input.DOB; }
 
-            if (Input.UserType != user.UserType)
-            { user.UserType = Input.UserType; }
+            //if (Input.UserType != user.UserType)
+            //{ user.UserType = Input.UserType; }
 
             await _userManager.UpdateAsync(user);
 

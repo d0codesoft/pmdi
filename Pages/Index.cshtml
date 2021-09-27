@@ -1,14 +1,17 @@
 ﻿@page
 @model IndexModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
+
 @{
     ViewData["Title"] = "Home page";
 }
 
 <main class="page">
-     <section class="clean-block clean-hero" style="background-image:url(&quot;images/bg2.jpg&quot;);color:rgba(9, 162, 255, 0.75);">
-         <div class="text">
-                <h2>Patient medical information.</h2>
-                <p>Save information on medical tests, treatment prescriptions. Share it with your doctor for a diagnosis.</p><button class="btn btn-outline-light btn-lg" type="button">Learn More</button>
-         </div>
-     </section>
+    <section class="clean-block clean-hero" style="background-image:url(&quot;images/bg2.jpg&quot;);color:rgba(9, 162, 255, 0.75);">
+        <div class="text">
+            <h2>Patient medical information.</h2>
+            <p>Save information on medical tests, treatment prescriptions. Share it with your doctor for a diagnosis.</p><button class="btn btn-outline-light btn-lg" type="button">Learn More</button>
+        </div>
+    </section>
 </main><!-- Start: Footer Dark -->

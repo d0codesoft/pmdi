@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using pmdi.Data;
 using pmdi.Model;
+using DBID = System.Int32;
 
 namespace pmdi.Pages
 {
@@ -19,27 +22,40 @@ namespace pmdi.Pages
             _context = context;
         }
 
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
-        public IActionResult OnGet(Guid id)
+        public IActionResult OnGet(string id)
         {
-            Id = id;
 
-            if (Id==Guid.Empty)
+            Id = id;
+            if (string.IsNullOrEmpty(Id))
             {
                 return RedirectToPage("./Index");
             }
 
-            Id = id;
-            var Token = _context.TokenSharedViewPatient.FirstOrDefault(p => p.Id == Id);
-            if (Token.Tsi==Guid.Empty)
+            var Token = _context.TokenSharedViewPatient.FirstOrDefault(p => p.Tsi == Id);
+            if (String.IsNullOrEmpty(Token.Tsi))
             {
                 return RedirectToPage("./Index");
             }
 
-            dataPage.Patient = _context.Patients.FirstOrDefault(p => p.Id==Token.PatientId);
-            dataPage.Medical = _context.MedicalTreatment.Where(m => m.PatientId == Token.PatientId)
-                .ToList();
+            dataPage = new DataPage()
+            {
+                Patient = _context.Patients.FirstOrDefault(p => p.Id == Token.PatientId),
+                Medical = _context.MedicalTreatment
+                    .Where(m => m.PatientId == Token.PatientId).ToList(),
+                VitalSigns = _context.VitalSignsPatients
+                    .Where(m => m.PatientId == Token.PatientId)
+                    .OrderByDescending(t => t.MeasurementDate).Take(5)
+                    .ToList(),
+                medicines = _context.PatientMedicine
+                    .Include(p => p.Drugs)
+                    .Include(p => p.UnitDosage)
+                    .Where(t => (t.PatientId == Token.PatientId && (t.EndReception > DateTime.UtcNow || t.EndReception == null)))
+                    .OrderBy(t=>t.Id)
+                    .ToList(),
+                culture = CultureInfo.CreateSpecificCulture("en-US")
+            };
 
             return Page();
         }
@@ -48,10 +64,12 @@ namespace pmdi.Pages
         {
             public Patients Patient { get; set; }
             public ICollection<MedicalTreatment> Medical { get; set; }
+            public ICollection<VitalSignsPatients> VitalSigns { get; set; }
+            public ICollection<PatientMedicine> medicines { get; set; }
+            public CultureInfo culture { get; set; }
         }
 
         [BindProperty]
-        //public Patients Patient { get; set; }
         public DataPage dataPage { get; set; }
         
         //// To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD

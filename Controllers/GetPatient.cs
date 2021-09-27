@@ -2,21 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using pmdi.Data;
 using pmdi.Model;
+using DBID = System.Int32;
 
 namespace pmdi
 {
-    public class GetPatientInfo : Controller
+    [Authorize]
+    //[AllowAnonymous]
+    public class GetPatient : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<GetPatient> _logger;
 
-        public GetPatientInfo(ApplicationDbContext context)
+        public GetPatient(ApplicationDbContext context, ILogger<GetPatient> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: GetPatientInfo
@@ -26,7 +33,7 @@ namespace pmdi
         }
 
         // GET: GetPatientInfo/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(DBID? id)
         {
             if (id == null)
             {
@@ -58,7 +65,7 @@ namespace pmdi
         {
             if (ModelState.IsValid)
             {
-                patients.Id = Guid.NewGuid();
+                //patients.Id = Guid.NewGuid();
                 _context.Add(patients);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -67,7 +74,7 @@ namespace pmdi
         }
 
         // GET: GetPatientInfo/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(DBID? id)
         {
             if (id == null)
             {
@@ -87,7 +94,7 @@ namespace pmdi
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,IdUsers,FirstName,LastName,MiddleName,DOB,PhotoPatient")] Patients patients)
+        public async Task<IActionResult> Edit(DBID id, [Bind("Id,IdUsers,FirstName,LastName,MiddleName,DOB,PhotoPatient")] Patients patients)
         {
             if (id != patients.Id)
             {
@@ -118,7 +125,7 @@ namespace pmdi
         }
 
         // GET: GetPatientInfo/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(DBID? id)
         {
             if (id == null)
             {
@@ -146,7 +153,7 @@ namespace pmdi
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PatientsExists(Guid id)
+        private bool PatientsExists(DBID id)
         {
             return _context.Patients.Any(e => e.Id == id);
         }

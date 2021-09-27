@@ -15,6 +15,10 @@ using Microsoft.Extensions.Hosting;
 using pmdi.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using pmdi.Services;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using pmdi.Authorization;
 
 namespace pmdi
 {
@@ -42,15 +46,35 @@ namespace pmdi
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddTokenProvider<DataProtectorTokenProvider<WebAppUser>>(TokenOptions.DefaultProvider);
 
+            services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddRazorPages();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                 .RequireAuthenticatedUser()
+                                 .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
+
+            // Authorization handlers.
+            services.AddScoped<IAuthorizationHandler,
+                                  PatientsUserAuthorizationHandler>();
+
+            services.AddScoped<IAuthorizationHandler,
+                                  PatientsAdministratorsAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -79,6 +103,58 @@ namespace pmdi
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            CreateRoles(serviceProvider);
+        }
+
+        private void CreateRoles(IServiceProvider serviceProvider)
+        {
+            //initializing custom roles 
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<WebAppRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<WebAppUser>>();
+            List<string> roleNames = new List<string>();
+            //= { "Admin", "Patient", "Doctor" };
+            roleNames.Add(Constants.AdministratorsRole);
+            roleNames.Add(Constants.PatientRole);
+            roleNames.Add(Constants.DoctorRole);
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = RoleManager.RoleExistsAsync(roleName);
+                roleExist.Wait();
+                if (!roleExist.Result)
+                {
+                    //create the roles and seed them to the database: Question 1
+                    var roleResult = RoleManager.CreateAsync(new WebAppRole(roleName));
+                    roleResult.Wait();
+                }
+            }
+
+            //Here you could create a super user who will maintain the web app
+            var poweruser = new WebAppUser
+            {
+                FirstName = "Alexandr",
+                LastName = "Maievsky",
+                DOB = DateTime.Now,
+                UserName = Configuration["AppSettings:AdminUserName"],
+                Email = Configuration["AppSettings:AdminUserEmail"],
+            };
+            //Ensure you have these values in your appsettings.json file
+            string userPWD = "iq&AKee3Mm5]vF4t";
+            var _user = UserManager.FindByEmailAsync(Configuration["AppSettings:AdminUserEmail"]);
+            _user.Wait();
+
+            if (_user.Result == null)
+            {
+                var createPowerUser = UserManager.CreateAsync(poweruser, userPWD);
+                createPowerUser.Wait();
+                if (createPowerUser.Result.Succeeded)
+                {
+                    //here we tie the new user to the role
+                    var um = UserManager.AddToRoleAsync(poweruser, "Admin");
+                    um.Wait();
+                }
+            }
         }
     }
 }

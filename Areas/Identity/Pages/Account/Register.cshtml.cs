@@ -42,21 +42,21 @@ namespace pmdi.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _context = context;
 
-            UserTypeDropDownList(_context);
+            //UserTypeDropDownList(_context);
         }
 
         public SelectList UserTypeSL { get; set; }
         
-        public void UserTypeDropDownList(ApplicationDbContext _context,
-            object selectedTypeUser = null)
-        {
-            var typeUserQuery = from d in _context.TypeUsers
-                                orderby d.idTypeUsers // Sort by id.
-                                select d;
+        //public void UserTypeDropDownList(ApplicationDbContext _context,
+        //    object selectedTypeUser = null)
+        //{
+        //    var typeUserQuery = from d in _context.TypeUsers
+        //                        orderby d.idTypeUsers // Sort by id.
+        //                        select d;
 
-            UserTypeSL = new SelectList(typeUserQuery.AsNoTracking(),
-                        "idTypeUsers", "Name", selectedTypeUser);
-        }
+        //    UserTypeSL = new SelectList(typeUserQuery.AsNoTracking(),
+        //                "idTypeUsers", "Name", selectedTypeUser);
+        //}
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -116,9 +116,9 @@ namespace pmdi.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var _userType = _context.TypeUsers.First(p => p.idTypeUsers == Input.UserTypeFK);
+                //var _userType = _context.TypeUsers.First(p => p.idTypeUsers == Input.UserTypeFK);
                 var user = new WebAppUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, 
-                        MiddleName = Input.MiddleName, DOB = Input.DOB, UserType = _userType };
+                        MiddleName = Input.MiddleName, DOB = Input.DOB };
                 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

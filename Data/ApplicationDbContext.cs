@@ -16,7 +16,7 @@ namespace pmdi.Data
         {
         }
 
-        public DbSet<TypeUser> TypeUsers { get; set; }
+        //public DbSet<TypeUser> TypeUsers { get; set; }
         public DbSet<Patients> Patients { get; set; }
         public DbSet<UnitDosage> UnitDosage { get; set; }
         public DbSet<ReferenceDrugs> ReferenceDrugs { get; set; }
@@ -45,12 +45,12 @@ namespace pmdi.Data
         {
             base.OnModelCreating(builder);
 
-            var typeUser = new TypeUser[] {
-                new TypeUser{ idTypeUsers = 1, Name = "Patient" },
-                new TypeUser{ idTypeUsers = 2, Name = "Doctor" }
-            };
+            //var typeUser = new TypeUser[] {
+            //    new TypeUser{ idTypeUsers = 1, Name = "Patient" },
+            //    new TypeUser{ idTypeUsers = 2, Name = "Doctor" }
+            //};
 
-            builder.Entity<TypeUser>().HasData(typeUser);
+            //builder.Entity<TypeUser>().HasData(typeUser);
         }
     }
 }
