@@ -39,7 +39,7 @@ namespace pmdi.Pages
                 return RedirectToPage("./Index");
             }
 
-            dataPage = new DataPage()
+            dataPage = new()
             {
                 Patient = _context.Patients.FirstOrDefault(p => p.Id == Token.PatientId),
                 Medical = _context.MedicalTreatment
@@ -48,13 +48,13 @@ namespace pmdi.Pages
                     .Where(m => m.PatientId == Token.PatientId)
                     .OrderByDescending(t => t.MeasurementDate).Take(5)
                     .ToList(),
-                medicines = _context.PatientMedicine
+                Medicines = _context.PatientMedicine
                     .Include(p => p.Drugs)
                     .Include(p => p.UnitDosage)
                     .Where(t => (t.PatientId == Token.PatientId && (t.EndReception > DateTime.UtcNow || t.EndReception == null)))
                     .OrderBy(t=>t.Id)
                     .ToList(),
-                culture = CultureInfo.CreateSpecificCulture("en-US")
+                Culture = CultureInfo.CreateSpecificCulture("en-US")
             };
 
             return Page();
@@ -65,8 +65,8 @@ namespace pmdi.Pages
             public Patients Patient { get; set; }
             public ICollection<MedicalTreatment> Medical { get; set; }
             public ICollection<VitalSignsPatients> VitalSigns { get; set; }
-            public ICollection<PatientMedicine> medicines { get; set; }
-            public CultureInfo culture { get; set; }
+            public ICollection<PatientMedicine> Medicines { get; set; }
+            public CultureInfo Culture { get; set; }
         }
 
         [BindProperty]

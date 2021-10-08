@@ -58,7 +58,7 @@ html {
 body {
     /* Margin bottom by footer height */
     /*margin-bottom: 60px;*/
-    font-family: "Montserrat", sans-serif !important;
+    font-family: "Noto Sans", sans-serif !important;
 }
 
 html, body {
@@ -95,6 +95,15 @@ html, body {
         padding: 40px 15px;
         text-shadow: 1px 1px 1px rgba(0,0,0,.15)
     }
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #6c757d !important;
+}
+
 
 
 @media(max-width: 575.98px) {
@@ -292,4 +301,28 @@ html, body {
         .clean-block.clean-post .post-body h4, .clean-block.clean-post .post-body .h4 {
             padding-top: 50px
         }
+}
+
+navbar {
+    font: "ITC-AvantGarde-Gothic XLight","Noto Sans",sans-serif;
+}
+
+    .navbar .to {
+        margin: 0;
+        padding: 0;
+    }
+
+      .navbar .navbar-nav .nav-link {
+            font-size: 16px;
+            position: relative;
+            padding: 1rem 1.3rem;
+            color: #545a6d;
+      }
+
+        .navbar .navbar-nav .nav-link i {
+            font-size: 16px;
+        }
+
+.text-muted {
+    color: #495057 !important;
 }

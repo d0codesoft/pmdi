@@ -112,11 +112,13 @@ namespace pmdi
             //initializing custom roles 
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<WebAppRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<WebAppUser>>();
-            List<string> roleNames = new List<string>();
-            //= { "Admin", "Patient", "Doctor" };
-            roleNames.Add(Constants.AdministratorsRole);
-            roleNames.Add(Constants.PatientRole);
-            roleNames.Add(Constants.DoctorRole);
+            List<string> roleNames = new()
+            {
+                //= { "Admin", "Patient", "Doctor" };
+                Constants.AdministratorsRole,
+                Constants.PatientRole,
+                Constants.DoctorRole
+            };
 
             foreach (var roleName in roleNames)
             {

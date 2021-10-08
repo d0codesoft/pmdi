@@ -38,7 +38,7 @@
                             </div>
                         </div>
                         <div class="col-sm-8">
-                            <h5 class="text-truncate">@Model.dataPage.Patient.FirstName @Model.dataPage.Patient.LastName</h5>
+                            <h6 class="text-truncate">@Model.dataPage.Patient.FirstName @Model.dataPage.Patient.LastName</h6>
                             <p class="text-muted mb-0 text-truncate">@Model.dataPage.Patient.Adress</p>
                         </div>
                     </div>
@@ -50,15 +50,15 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <h5 class="text-sm-center">@Model.dataPage.Patient.DOB.ToString("dd MMMM yyyy", @Model.dataPage.culture)</h5>
+                            <h6 class="text-sm-center">@Model.dataPage.Patient.DOB.ToString("dd MMMM yyyy", @Model.dataPage.Culture)</h6>
                             <p class="text-muted mb-0 text-sm-center">DOB</p>
                         </div>
                         <div class="col-2">
-                            <h5 class="text-sm-center">@Model.dataPage.Patient.Age</h5>
+                            <h6 class="text-sm-center">@Model.dataPage.Patient.Age</h6>
                             <p class="text-muted mb-0 text-sm-center">Age</p>
                         </div>
                         <div class="col-3">
-                            <h5 class="text-sm-center">@Model.dataPage.Patient.Weight kg</h5>
+                            <h6 class="text-sm-center">@Model.dataPage.Patient.Weight kg</h6>
                             <p class="text-muted mb-0 text-sm-center">Weight</p>
                         </div>
                     </div>
@@ -80,23 +80,23 @@
                 <div class="card-body pt-0">
                     <div class="row">
                         <div class="col-sm-4">
-                            <h5 class="font-size-15 text-sm-center">Date</h5>
+                            <h6 class="font-size-15 text-sm-center">Date</h6>
                         </div>
                         <div class="col-sm-3">
-                            <h5 class="font-size-15 mb-0 text-sm-center">Blud pressure</h5>
+                            <h6 class="font-size-15 mb-0 text-sm-center">Blud pressure</h6>
                         </div>
                         <div class="col-sm-2">
-                            <h5 class="font-size-15 mb-0 text-sm-center">Pulse</h5>
+                            <h6 class="font-size-15 mb-0 text-sm-center">Pulse</h6>
                         </div>
                         <div class="col-sm-2">
-                            <h5 class="font-size-15 mb-0 text-sm-center">Temp.</h5>
+                            <h6 class="font-size-15 mb-0 text-sm-center">Temp.</h6>
                         </div>
                     </div>
                     @foreach (var itemVital in Model.dataPage.VitalSigns)
                     {
                         <div class="row">
                             <div class="col-sm-4">
-                                <p class="text-muted mb-0 text-sm-center">@itemVital.MeasurementDate.ToString("dddd, dd MMMM yyyy HH:mm tt", @Model.dataPage.culture)</p>
+                                <p class="text-muted mb-0 text-sm-center">@itemVital.MeasurementDate.ToString("dddd, dd MMMM yyyy HH:mm tt", @Model.dataPage.Culture)</p>
                             </div>
                             <div class="col-sm-3">
                                 <p class="text-muted mb-0 text-sm-center">@itemVital.BludPressureUpper/@itemVital.BludPressureLower</p>
@@ -127,22 +127,22 @@
                 <div class="card-body pt-0">
                     <div class="row">
                         <div class="col-sm-3">
-                            <h5 class="font-size-10 text-sm-center">Name of drug</h5>
+                            <h6 class="font-size-10 text-sm-center">Name of drug</h6>
                         </div>
                         <div class="col-sm-2">
-                            <h5 class="font-size-10 mb-0 text-sm-center">Daily dose drug</h5>
+                            <h6 class="font-size-10 mb-0 text-sm-center">Daily dose drug</h6>
                         </div>
                         <div class="col-sm-2">
-                            <h5 class="font-size-10 mb-0 text-sm-center">In the morning</h5>
+                            <h6 class="font-size-10 mb-0 text-sm-center">In the morning</h6>
                         </div>
                         <div class="col-sm-2">
-                            <h5 class="font-size-10 mb-0 text-sm-center">At lunch</h5>
+                            <h6 class="font-size-10 mb-0 text-sm-center">At lunch</h6>
                         </div>
                         <div class="col-sm-2">
-                            <h5 class="font-size-10 mb-0 text-sm-center">In the evening</h5>
+                            <h6 class="font-size-10 mb-0 text-sm-center">In the evening</h6>
                         </div>
                     </div>
-                    @foreach (var itemMed in Model.dataPage.medicines)
+                    @foreach (var itemMed in Model.dataPage.Medicines)
                     {
                         <div class="row mb-1 bg-light">
                             <div class="col-sm-3">
