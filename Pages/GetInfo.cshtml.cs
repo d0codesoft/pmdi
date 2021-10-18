@@ -39,23 +39,23 @@ namespace pmdi.Pages
                 return RedirectToPage("./Index");
             }
 
-            dataPage = new()
-            {
-                Patient = _context.Patients.FirstOrDefault(p => p.Id == Token.PatientId),
-                Medical = _context.MedicalTreatment
-                    .Where(m => m.PatientId == Token.PatientId).ToList(),
-                VitalSigns = _context.VitalSignsPatients
+            dataPage = new DataPage();
+
+            dataPage.Patient = _context.Patients.FirstOrDefault(p => p.Id == Token.PatientId);
+            dataPage.Medical = _context.MedicalTreatment
+                    .Where(m => m.PatientId == Token.PatientId).ToList();
+            dataPage.VitalSigns = _context.VitalSignsPatients
                     .Where(m => m.PatientId == Token.PatientId)
                     .OrderByDescending(t => t.MeasurementDate).Take(5)
-                    .ToList(),
-                Medicines = _context.PatientMedicine
+                    .ToList();
+            dataPage.Medicines = _context.PatientMedicine
                     .Include(p => p.Drugs)
                     .Include(p => p.UnitDosage)
                     .Where(t => (t.PatientId == Token.PatientId && (t.EndReception > DateTime.UtcNow || t.EndReception == null)))
-                    .OrderBy(t=>t.Id)
-                    .ToList(),
-                Culture = CultureInfo.CreateSpecificCulture("en-US")
-            };
+                    .OrderBy(t => t.Id)
+                    .ToList();
+            dataPage.Culture = CultureInfo.CreateSpecificCulture("en-US");
+            
 
             return Page();
         }
