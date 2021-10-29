@@ -83,7 +83,8 @@ namespace pmdi.Model
     public enum PatientSex
     {
         male = 0,
-        female
+        female,
+        other
     }
 
     //пользователи системы
@@ -118,6 +119,14 @@ namespace pmdi.Model
         public Decimal Weight { get; set; }
 
         public PatientSex Sex { get; set; }
+
+        [Phone]
+        [Display(Name = "Phone number")]
+        public string PhoneNumber { get; set; }
+
+        [EmailAddress]
+        [Display(Name = "Email address")]
+        public string EmailAddress { get; set; }
 
         [NotMapped]
         public int Age { 

@@ -19,6 +19,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using pmdi.Authorization;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace pmdi
 {
@@ -90,6 +92,11 @@ namespace pmdi
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "images")),
+            //    RequestPath = "/images"
+            //});
 
             app.UseRouting();
 
@@ -135,8 +142,7 @@ namespace pmdi
             //Here you could create a super user who will maintain the web app
             var poweruser = new WebAppUser
             {
-                FirstName = "Alexandr",
-                LastName = "Maievsky",
+                FullName = "Alexandr Maievsky",
                 DOB = DateTime.Now,
                 UserName = Configuration["AppSettings:AdminUserName"],
                 Email = Configuration["AppSettings:AdminUserEmail"],

@@ -1,5 +1,6 @@
 @page "{id}"
 @using Microsoft.AspNetCore.Authorization
+@using pmdi.Model;
 @model pmdi.Pages.GetInfoPatientModel
 @attribute [AllowAnonymous]
 
@@ -8,64 +9,62 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<section class="clean-block">
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="text-info mb-0">Patient's medical tests</h4>
-                <div class="page-title-right">
-                    <div class="text-info">Information</div>
+<section class="container">
+    <section class="features style2 section pt-160">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h3 class="wow zoomIn" data-wow-delay=".2s">Information</h3>
+                    <p class="wow fadeInUp" data-wow-delay=".6s">Patient's medical tests</p>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xl-4 mb-4">
-            <div class="card shadow overflow-hidden">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="text-primary fw-bold m-0">Patient information</h6>
-                    <div class="dropdown no-arrow">
-                        <button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toogle="dropdown" type="button">
-                            <i class="fas fa-ellipsis-v text-gray-400"></i>
-                        </button>
+        <div class="single-feature">
+            <div class="row">
+                <div class="col-3 col-sm-3">
+                    <div class="avatar-md mb-1 d-flex justify-content-center">
+                        @if (@Model.dataPage.Patient.Sex == PatientSex.male)
+                        {
+                            <img src="~/images/users/man.png" alt="" height="48" class="rounded">
+                        }
+                        else if (@Model.dataPage.Patient.Sex == PatientSex.female)
+                        {
+                            <img src="~/images/users/woman.png" alt="" height="48" class="rounded">
+                        }
+                        else
+                        {
+                            <img src="~/images/users/other.png" alt="" height="48" class="rounded">
+                        }
                     </div>
+                    <h6 class="text-sm-center">@Model.dataPage.Patient.FirstName @Model.dataPage.Patient.LastName</h6>
+                    <p class="text-sm-center">@Model.dataPage.UserEmail</p>
                 </div>
-                <div class="card-body pt-0">
+                <div class="col">
                     <div class="row">
-                        <div class="col-sm-3">
-                            <div class="avatar-md mb-1">
-                                <img src="images/woman.png" alt="" height="48">
-                            </div>
+                        <div class="col">
+                            <h6 class="text-sm-center">@Model.dataPage.Patient.DOB.ToString("dd MMMM yyyy", @Model.dataPage.Culture) (@Model.dataPage.Patient.Age y.o.)</h6>
+                            <p class="text-muted mb-1 text-sm-center">DOB</p>
                         </div>
-                        <div class="col-sm-8">
-                            <h6 class="text-truncate">@Model.dataPage.Patient.FirstName @Model.dataPage.Patient.LastName</h6>
-                            <p class="text-muted mb-0 text-truncate">@Model.dataPage.Patient.Adress</p>
+                        <div class="col">
+                            <h6 class="text-sm-center">@Model.dataPage.Patient.Adress</h6>
+                            <p class="text-muted mb-1 text-sm-center">Adress</p>
                         </div>
                     </div>
-
-                    <div class="row mb-4">
-                        <div class="col-sm-3">
-                            <div class="align-end">
-                                <a href="" class="btn btn-primary waves-effect waves-light btn-sm align-bottom">View Profile <i class="mdi mdi-arrow-right ml-1"></i></a>
-                            </div>
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-sm-center">@Model.dataPage.UserPhone</h6>
+                            <p class="text-muted mb-1 text-sm-center">Phone namber</p>
                         </div>
-                        <div class="col-3">
-                            <h6 class="text-sm-center">@Model.dataPage.Patient.DOB.ToString("dd MMMM yyyy", @Model.dataPage.Culture)</h6>
-                            <p class="text-muted mb-0 text-sm-center">DOB</p>
-                        </div>
-                        <div class="col-2">
-                            <h6 class="text-sm-center">@Model.dataPage.Patient.Age</h6>
-                            <p class="text-muted mb-0 text-sm-center">Age</p>
-                        </div>
-                        <div class="col-3">
-                            <h6 class="text-sm-center">@Model.dataPage.Patient.Weight kg</h6>
-                            <p class="text-muted mb-0 text-sm-center">Weight</p>
+                        <div class="col">
+                            <h6 class="text-sm-center">@Model.dataPage.Patient.Weight kg.</h6>
+                            <p class="text-muted mb-1 text-sm-center">Weight</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
     <div class="row">
         <div class="col-xl-6 mb-4">
             <div class="card shadow overflow-hidden">
@@ -79,32 +78,32 @@
                 </div>
                 <div class="card-body pt-0">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col">
                             <h6 class="font-size-15 text-sm-center">Date</h6>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col">
                             <h6 class="font-size-15 mb-0 text-sm-center">Blud pressure</h6>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col">
                             <h6 class="font-size-15 mb-0 text-sm-center">Pulse</h6>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col">
                             <h6 class="font-size-15 mb-0 text-sm-center">Temp.</h6>
                         </div>
                     </div>
                     @foreach (var itemVital in Model.dataPage.VitalSigns)
                     {
                         <div class="row">
-                            <div class="col-sm-4">
-                                <p class="text-muted mb-0 text-sm-center">@itemVital.MeasurementDate.ToString("dddd, dd MMMM yyyy HH:mm tt", @Model.dataPage.Culture)</p>
+                            <div class="col">
+                                <p class="text-muted mb-0 text-sm-center">@itemVital.MeasurementDate.ToString("dd MMMM yyyy", @Model.dataPage.Culture)</p>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col">
                                 <p class="text-muted mb-0 text-sm-center">@itemVital.BludPressureUpper/@itemVital.BludPressureLower</p>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col">
                                 <p class="text-muted mb-0 text-sm-center">@itemVital.Pulse</p>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col">
                                 <p class="text-muted mb-0 text-sm-center">@itemVital.Temp &#8451;</p>
                             </div>
                         </div>
@@ -126,29 +125,29 @@
                 </div>
                 <div class="card-body pt-0">
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col">
                             <h6 class="font-size-10 text-sm-center">Name of drug</h6>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col">
                             <h6 class="font-size-10 mb-0 text-sm-center">Daily dose drug</h6>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col">
                             <h6 class="font-size-10 mb-0 text-sm-center">In the morning</h6>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col">
                             <h6 class="font-size-10 mb-0 text-sm-center">At lunch</h6>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col">
                             <h6 class="font-size-10 mb-0 text-sm-center">In the evening</h6>
                         </div>
                     </div>
                     @foreach (var itemMed in Model.dataPage.Medicines)
                     {
                         <div class="row mb-1 bg-light">
-                            <div class="col-sm-3">
+                            <div class="col">
                                 <p class="text-muted mb-0 text-sm-left">@itemMed.Drugs.Name_en</p>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col">
                                 <p class="text-muted mb-0 text-sm-center">
                                     @if (@itemMed.DosageDaily == 0)
                                     {
@@ -160,7 +159,7 @@
                                     }
                                 </p>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col">
                                 <p class="text-muted mb-0 text-sm-center">
                                     @if (@itemMed.DosageEvening == 0)
                                     {
@@ -172,7 +171,7 @@
                                     }
                                 </p>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col">
                                 <p class="text-muted mb-0 text-sm-center">
                                     @if (@itemMed.DosageLunch == 0)
                                     {
@@ -182,8 +181,8 @@
                                     {
                                         @itemMed.DosageLunch.ToString("0.#####") @:&nbsp; @itemMed.UnitDosage.Name_en
                                     }
-</div>
-                            <div class="col-sm-2">
+                            </div>
+                            <div class="col">
                                 <p class="text-muted mb-0 text-sm-center">
                                     @if (@itemMed.DosageMorning == 0)
                                     {
@@ -193,7 +192,7 @@
                                     {
                                         @itemMed.DosageMorning.ToString("0.#####") @:&nbsp; @itemMed.UnitDosage.Name_en
                                     }
-</div>
+                            </div>
                         </div>
                     }
                 </div>

@@ -25,16 +25,16 @@ namespace pmdi.Areas.Identity.Data
         [StringLength(100)]
         [PersonalData]
         [Required] // Data annotations needed to configure as required
-        public string FirstName { get; set; }
+        public string FullName { get; set; }
 
-        [StringLength(100)]
-        [PersonalData]
-        [Required]
-        public string LastName { get; set; } // Data annotations needed to configure as required
+        //[StringLength(100)]
+        //[PersonalData]
+        //[Required]
+        //public string LastName { get; set; } // Data annotations needed to configure as required
 
-        [StringLength(100)]
-        [PersonalData]
-        public string MiddleName { get; set; } // Optional by convention
+        //[StringLength(100)]
+        //[PersonalData]
+        //public string MiddleName { get; set; } // Optional by convention
 
         [Comment("Date of Birth")]
         [DataType(DataType.Date)]

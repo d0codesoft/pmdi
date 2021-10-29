@@ -33,16 +33,9 @@ namespace pmdi.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Display(Name = "")]
+            [Display(Name = "Full name")]
             [Required] // Data annotations needed to configure as required
-            public string FirstName { get; set; }
-
-            [Display(Name = "")]
-            [Required]
-            public string LastName { get; set; } // Data annotations needed to configure as required
-
-            [Display(Name = "")]
-            public string MiddleName { get; set; } // Optional by convention
+            public string FullName { get; set; }
 
             [Display(Name = "Date of Birth")]
             [DataType(DataType.Date)]
@@ -63,9 +56,7 @@ namespace pmdi.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                MiddleName = user.MiddleName,
+                FullName = user.FullName,
                 DOB = user.DOB,
                 //UserType = user.UserType,
                 PhoneNumber = phoneNumber
@@ -109,14 +100,8 @@ namespace pmdi.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            if (Input.FirstName != user.FirstName)
-            { user.FirstName = Input.FirstName; }
-
-            if (Input.LastName != user.LastName)
-            { user.LastName = Input.LastName; }
-
-            if (Input.MiddleName != user.MiddleName)
-            { user.MiddleName = Input.MiddleName; }
+            if (Input.FullName != user.FullName)
+            { user.FullName = Input.FullName; }
 
             if (Input.DOB != user.DOB)
             { user.DOB = Input.DOB; }

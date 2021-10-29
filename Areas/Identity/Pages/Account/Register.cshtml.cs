@@ -67,16 +67,14 @@ namespace pmdi.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Display(Name = "First name")]
-            [Required] // Data annotations needed to configure as required
-            public string FirstName { get; set; }
-
-            [Display(Name = "Last name")]
             [Required]
-            public string LastName { get; set; } // Data annotations needed to configure as required
+            [DataType(DataType.Text)]
+            [Display(Name = "Full name")]
+            public string FullName { get; set; }
 
-            [Display(Name = "Middle name")]
-            public string MiddleName { get; set; } // Optional by convention
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
 
             [Display(Name = "Type user - Patient or Doctor")]
             [Required]
@@ -117,8 +115,8 @@ namespace pmdi.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 //var _userType = _context.TypeUsers.First(p => p.idTypeUsers == Input.UserTypeFK);
-                var user = new WebAppUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, 
-                        MiddleName = Input.MiddleName, DOB = Input.DOB };
+                var user = new WebAppUser { UserName = Input.Email, Email = Input.Email, PhoneNumber = Input.PhoneNumber,
+                    FullName = Input.FullName, DOB = Input.DOB };
                 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -127,8 +125,7 @@ namespace pmdi.Areas.Identity.Pages.Account
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
+                    var callbackUrl = Url.Page( "/Account/ConfirmEmail",
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);

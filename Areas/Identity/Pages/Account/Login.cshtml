@@ -59,13 +59,13 @@
                                 <input asp-for="Input.RememberMe" type="checkbox" class="form-check-input width-auto" id="exampleCheck1">
                                 <label class="form-check-label">Remember me</label>
                             </div>
-                            <a class="lost-pass" asp-page="./ForgotPassword">Forgot password?</a>
+                            <a class="lost-pass" asp-area="Identity" asp-page="./ForgotPassword">Forgot password?</a>
                         </div>
                         <div class="button">
                             <button class="btn" type="submit">Sign In</button>
                         </div>
                         <h4 class="create-account">
-                            Don't have an account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Sign Up Now</a>
+                            Don't have an account? <a asp-area="Identity" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Sign Up Now</a>
                         </h4>
                     </div>
                 </form>

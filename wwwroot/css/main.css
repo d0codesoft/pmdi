@@ -1759,17 +1759,19 @@ ol {
     -webkit-transition: all 0.3s ease-out 0s;
     transition: all 0.3s ease-out 0s;
     padding: 0;
+    background-color: #0787d5;
 }
 
-.navbar-area.sticky {
-  position: fixed;
-  z-index: 99;
-  -webkit-box-shadow: 0px 20px 50px 0px rgba(0, 0, 0, 0.05);
-          box-shadow: 0px 20px 50px 0px rgba(0, 0, 0, 0.05);
-  -webkit-transition: all 0.3s ease-out 0s;
-  transition: all 0.3s ease-out 0s;
-  padding: 0px 0;
-}
+    .navbar-area.sticky {
+        position: fixed;
+        z-index: 99;
+        -webkit-box-shadow: 0px 20px 50px 0px rgba(0, 0, 0, 0.05);
+        box-shadow: 0px 20px 50px 0px rgba(0, 0, 0, 0.05);
+        -webkit-transition: all 0.3s ease-out 0s;
+        transition: all 0.3s ease-out 0s;
+        padding: 0px 0;
+        background-color: #fff;
+    }
 
 .navbar {
   padding: 0;
@@ -2832,18 +2834,18 @@ ol {
 }
 
 .features .section-title {
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .features .section-title {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 }
 
 @media (max-width: 767px) {
   .features .section-title {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 }
 
@@ -3035,9 +3037,9 @@ ol {
 }
 
 .features .single-feature {
-  margin-top: 30px;
-  padding: 50px 40px;
-  padding-right: 60px;
+  margin-top: 5px;
+  padding: 10px 5px;
+  padding-right: 5px;
   border-radius: 8px;
   text-align: left;
   background-color: #fff;

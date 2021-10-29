@@ -1,80 +1,106 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
 @model RegisterModel
+@attribute [AllowAnonymous]
 @{
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
+<!--
+@section head {
+    <link rel="stylesheet" href="~/css/intlTelInput.min.css" />
+}
+-->
 
-<main class="page registration-page">
-    <section class="clean-block clean-form dark">
-        <div class="container">
-            <div class="block-heading">
-                <h2 class="text-info">Registration</h2>
-                <p></p>
-            </div>
-            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <h4>Create a new account.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="mb-3">
-                    <label asp-for="Input.FirstName"></label>
-                    <input asp-for="Input.FirstName" class="form-control" />
-                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Input.LastName"></label>
-                    <input asp-for="Input.LastName" class="form-control" />
-                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Input.MiddleName"></label>
-                    <input asp-for="Input.MiddleName" class="form-control" />
-                    <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Input.DOB"></label>
-                    <input asp-for="Input.DOB" class="form-control" />
-                    <span asp-validation-for="Input.DOB" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Input.ConfirmPassword"></label>
-                    <input asp-for="Input.ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                </div>
-                <button type="submit" class="btn btn-primary">Register</button>
-            </form>
-            <section>
-                @{
-                    if ((Model.ExternalLogins?.Count ?? 0) != 0)
-                    {
-                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                            <div>
-                                <p>
+<h1>@ViewData["Title"]</h1>
+<!-- Start Account Signup Area -->
+<div class="account-login section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+                <form class="card login-form inner-content" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div class="card-body">
+                        <div class="title">
+                            <h3>Let's join us</h3>
+                            <p>Use the form below to create your account.</p>
+                        </div>
+                        @{
+                            if ((Model.ExternalLogins?.Count ?? 0) != 0)
+                            {
+                                <div class="alt-option">
                                     @foreach (var provider in Model.ExternalLogins)
                                     {
                                         <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                                     }
-                                </p>
+                                </div>
+                                <div class="or"><span>or sign up with your email</span></div>
+                            }
+                            else
+                            {
+                                <div class="or"><span>sign up with your email</span></div>
+                            }
+                        }
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="input-head">
+                            <div class="form-group input-group">
+                                <label><i class="lni lni-user"></i></label>
+                                <input class="form-control" asp-for="Input.FullName" type="text" id="name" placeholder="Enter your first name"
+                                       required>
                             </div>
-                        </form>
-                    }
-                }
-            </section>
+                            <div class="form-group input-group">
+                                <label><i class="lni lni-calendar"></i></label>
+                                <input class="form-control" asp-for="Input.DOB" type="date" id="datebirthday" placeholder="Enter your birthday"
+                                       required>
+                            </div>
+                            <div class="form-group input-group">
+                                <label><i class="lni lni-phone"></i></label>
+                                <input class="form-control" asp-for="Input.PhoneNumber" type="tel" id="phone" placeholder="Enter your phone"
+                                       required>
+                            </div>
+                            <div class="form-group input-group">
+                                <label><i class="lni lni-envelope"></i></label>
+                                <input class="form-control" asp-for="Input.Email" type="email" id="reg-email"
+                                       placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group input-group">
+                                <label><i class="lni lni-lock-alt"></i></label>
+                                <input class="form-control" asp-for="Input.Password" type="password" id="reg-pass"
+                                       placeholder="Enter your password" required>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap justify-content-between bottom-content">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input width-auto" id="exampleCheck1">
+                                <label class="form-check-label">
+                                    Agree to <a asp-area="" asp-page="/Privacy">
+                                        privacy &
+                                        conditions
+                                    </a>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="button">
+                            <button class="btn" type="submit">Sign Up</button>
+                        </div>
+                        <h4 class="create-account">
+                            Already have an account? <a asp-area="Identity" asp-page="/Account/Login">Sign In Now</a>
+                        </h4>
+                    </div>
+                </form>
+            </div>
         </div>
-    </section>
-</main>
+    </div>
+</div>
+<!-- End Account Signup Area -->
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<!--<script src="~/js/intlTelInput-jquery.min.js"></script>
+    <script>
+        $("#telephone").intlTelInput({
+            // options here
+        });
+    </script> -->
