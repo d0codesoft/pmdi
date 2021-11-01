@@ -33,7 +33,7 @@ namespace pmdi.Pages
 
         public string Id { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public IActionResult OnGet(string id)
         {
 
             Id = id;
@@ -70,7 +70,8 @@ namespace pmdi.Pages
             if (string.IsNullOrEmpty(dataPage.Patient.PhoneNumber))
             {
                 dataPage.UserPhone = dataPage.UserPatient.PhoneNumber;
-            } else
+            }
+            else
             {
                 dataPage.UserPhone = dataPage.Patient.PhoneNumber;
             }
