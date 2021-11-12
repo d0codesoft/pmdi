@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using pmdi.Authorization;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace pmdi
 {

@@ -1073,21 +1073,21 @@ ol {
 
 .section {
   padding-top: 110px;
-  padding-bottom: 110px;
+  padding-bottom: 30px;
   position: relative;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .section {
-    padding-top: 70px;
-    padding-bottom: 70px;
+    padding-top: 25px;
+    padding-bottom: 25px;
   }
 }
 
 @media (max-width: 767px) {
   .section {
-    padding-top: 60px;
-    padding-bottom: 60px;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 }
 
@@ -1593,7 +1593,7 @@ ol {
 
 @media (max-width: 767px) {
   .header {
-    padding: 18px 0 !important;
+    padding: 5px 0 !important;
   }
   .header .mobile-menu-btn .toggler-icon {
     background-color: #fff;
@@ -2817,7 +2817,7 @@ ol {
 
 @media only screen and (min-width: 768px) and (max-width: 991px), (max-width: 767px) {
   .features .responsive-space {
-    margin-top: 40px;
+    margin-top: 10px;
   }
 }
 
@@ -2829,28 +2829,28 @@ ol {
 
 @media (max-width: 767px) {
   .features {
-    padding-top: 60px;
+    padding-top: 80px;
   }
 }
 
 .features .section-title {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .features .section-title {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
 }
 
 @media (max-width: 767px) {
   .features .section-title {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
 }
 
 .features.style2 .single-feature {
-  padding: 40px 35px;
+  padding: 15px 15px;
 }
 
 .features.style2 .single-feature .list-icon {
