@@ -56,6 +56,17 @@ namespace pmdi
                     .Build();
             });
 
+            services.ConfigureApplicationCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+                    options.LoginPath = "/Identity/Account/Login";
+                    options.LogoutPath = "/Identity/Account/Logout";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.SlidingExpiration = true;
+                }
+            );
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
@@ -67,6 +78,8 @@ namespace pmdi
                                  .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
+
+            services.AddMvcCore();
 
             // Authorization handlers.
             services.AddScoped<IAuthorizationHandler,

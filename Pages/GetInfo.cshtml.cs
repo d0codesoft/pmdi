@@ -35,7 +35,7 @@ namespace pmdi.Pages
 
         public IActionResult OnGet(string id)
         {
-
+            
             Id = id;
             if (string.IsNullOrEmpty(Id))
             {
@@ -66,6 +66,10 @@ namespace pmdi.Pages
             dataPage.Culture = CultureInfo.CreateSpecificCulture("en-US");
 
             dataPage.UserPatient = _context.Users.FirstOrDefault(p => p.Id == dataPage.Patient.UserId);
+            if (dataPage.UserPatient==null)
+            {
+                return RedirectToPage("./Index");
+            }
 
             if (string.IsNullOrEmpty(dataPage.Patient.PhoneNumber))
             {

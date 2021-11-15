@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +11,12 @@ using pmdi.Model;
 
 namespace pmdi
 {
-    public class PatientsController : Controller
+    [Authorize]
+    public class PatientsUserController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PatientsController(ApplicationDbContext context)
+        public PatientsUserController(ApplicationDbContext context)
         {
             _context = context;
         }

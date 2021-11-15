@@ -1072,7 +1072,7 @@ ol {
 }
 
 .section {
-  padding-top: 110px;
+  padding-top: 80px;
   padding-bottom: 30px;
   position: relative;
 }
@@ -1847,7 +1847,7 @@ ol {
   -webkit-transition: all 0.3s ease-out 0s;
   transition: all 0.3s ease-out 0s;
   position: relative;
-  padding: 35px 0;
+  padding: 25px 0;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
